@@ -21,4 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "SchedulMe"
 include(":app")
- 
+include(":ScheduleMeBase")
