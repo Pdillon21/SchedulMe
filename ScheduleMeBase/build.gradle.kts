@@ -1,6 +1,9 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.jetbrainsKotlinAndroid)
+    `maven-publish`
 }
 
 android {
@@ -32,8 +35,46 @@ android {
     }
 }
 
-dependencies {
+val mLibraryName = "Schedule Me Base"
+val mFilePath = "$buildDir/outputs/aar/"
+val mLibraryFileName = "${mLibraryName.replace(" ","")}-release.aar"
+val mGroupId = "com.schedule.me"
+val mArtifactID = "base"
+val mVersionNumber = "0.0.1-alpha"
+val mLibraryDescription = "A simple library to test CI path"
+val githubProperties = Properties().apply {
+    file("../github.properties").inputStream().use {
+        load(it)
+    }
+}
 
+publishing {
+    publications {
+        create<MavenPublication>("maven") {
+            groupId = mGroupId
+            artifactId = mArtifactID
+            version = mVersionNumber
+            artifact("$mFilePath$mLibraryFileName")
+            pom {
+                name = mLibraryFileName
+                description = mLibraryDescription
+            }
+        }
+    }
+
+    repositories {
+        maven {
+            name = "GithubPackages"
+            url = uri("https://maven.pkg.github.com/PDillon21/SchedulMe")
+            credentials {
+                username = (githubProperties["gpr.usr"] ?: System.getenv("GITHUB_USER")).toString()
+                password = (githubProperties["gpr.key"] ?: System.getenv("GITHUB_TOKEN")).toString()
+            }
+        }
+    }
+}
+
+dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
