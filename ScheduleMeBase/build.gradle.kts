@@ -40,7 +40,7 @@ val mFilePath = "$buildDir/outputs/aar/"
 val mLibraryFileName = "${mLibraryName.replace(" ","")}-release.aar"
 val mGroupId = "com.schedule.me"
 val mArtifactID = "base"
-val mVersionNumber = "0.0.1-alpha"
+val mVersionNumber = "0.0.2-alpha"
 val mLibraryDescription = "A simple library to test CI path"
 val githubProperties = Properties().apply {
     file("../github.properties").inputStream().use {
